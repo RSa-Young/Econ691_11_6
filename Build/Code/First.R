@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 #This is the ECON 691 Rscript for November 6,2024
 #Ryan Sarau-Young
 
