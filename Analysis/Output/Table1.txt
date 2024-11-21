@@ -1,0 +1,14 @@
+
+Table 1: Summary Statistics
+========================================================
+Statistic               N   Mean  St. Dev.  Min    Max  
+--------------------------------------------------------
+No Highschool Degree   153 0.080   0.020   0.047  0.132 
+Highschool Diploma     153 0.296   0.042   0.191  0.413 
+Some College           153 0.216   0.032   0.142  0.291 
+Undergraduate Degree   153 0.254   0.034   0.164  0.320 
+Advanced Degree        153 0.103   0.035   0.064  0.287 
+LN of Total Population 153 14.694  1.034   12.788 16.998
+Sightings              153 93.118 100.777    1     639  
+LN of Sightings        153 4.040   1.076   0.000  6.460 
+--------------------------------------------------------

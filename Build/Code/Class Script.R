@@ -37,14 +37,15 @@ library(sf)
   
   
 #Cleaning Data####
-
+#to delete rows use filter, to delete columns use "-{name of column}"
   ufo.us <- ufo %>%
     filter(country == "us") %>%
     select(-comments) %>%
     mutate(date = as.Date(str_split_i(datetime," ", 1), "%m/%d/%Y"),
            year = year(date)) %>%
     filter(year %in% years)
-
+# %in% is doing an action in a specific list
+  
   cen.map <- cen.stat %>%
     filter(year == "2011",
            GEOID != "02",
@@ -59,14 +60,14 @@ library(sf)
     mutate(variable = str_remove(variable, "15002_0")) %>%
     pivot_wider(id_cols = c("year", "GEOID", "NAME"), names_from = "variable",
                 values_from = "estimate") %>%
-    mutate(nohs = (B07+B08+B09+B10+B24+B25+B26+B27) / B01,
-           hson = (B11+B28) / B01,
-           smcol = (B12+B13+B29+B30) / B01,
-           deg = (B14+B15+B31+B32) / B01,
-           addeg = (B16+B17+B18+B33+B34+B35) / B01,
-           tpop = log(B01),
+    mutate(nohs = (B07+B08+B09+B10+B24+B25+B26+B27) / B01, #no high school
+           hson = (B11+B28) / B01, #high school only
+           smcol = (B12+B13+B29+B30) / B01, #some college
+           deg = (B14+B15+B31+B32) / B01, #degree
+           addeg = (B16+B17+B18+B33+B34+B35) / B01, # advanced degree
+           tpop = log(B01), #total population
            year = as.numeric(year)) %>%
-    select(year, GEOID, nohs:tpop)
+    select(year, GEOID, nohs:tpop) # starting column:ending column
    
 #Aggregating and Merging
   
@@ -142,9 +143,10 @@ library(sf)
             out = "./Analysis/Output/Table1.txt")
   
   
+  
   stargazer(as.data.frame(ufo.core), 
-            type = "html", 
-            out = "./Analysis/Output/Table1.html",
+            type = "latex", 
+            out = "./Analysis/Output/Table1.txt",
             title="Table 1: Summary Statistics",
             covariate.labels = c("No Highschool Degree", "Highschool Diploma","Some College",
                                  "Undergraduate Degree","Advanced Degree","LN of Total Population",
@@ -159,8 +161,8 @@ library(sf)
  mod3 <- lm(ln_n ~ nohs + hson + smcol + deg + tpop + factor(year) + factor(State), data = ufo.core)
   
 c<- stargazer::stargazer(mod1, mod2, mod3,omit = ".State.",
-                         type = "html",
-                         out = "./Analysis/Output/Table2.html",
+                         type = "latex",
+                         out = "./Analysis/Output/Table2.txt",
                          add.lines=list(c("State F.E.", "NO", "NO", "YES")),
                          dep.var.labels = "LN(Sightings)",
                          covariate.labels=c("No Highschool Degree", "Highschool Diploma","Some College",
